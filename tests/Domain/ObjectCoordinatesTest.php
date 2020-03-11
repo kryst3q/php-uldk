@@ -6,7 +6,7 @@ namespace Kryst3q\PhpUldk\Tests\Domain;
 
 use Codeception\Test\Unit;
 use Kryst3q\PhpUldk\Domain\ObjectCoordinates;
-use Kryst3q\PhpUldk\ValueObject\CoordinateSystem;
+use Kryst3q\PhpUldk\Domain\CoordinateSystem;
 
 class ObjectCoordinatesTest extends Unit
 {

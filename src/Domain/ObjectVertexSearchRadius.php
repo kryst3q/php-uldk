@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace Kryst3q\PhpUldk\Domain;
 
-class ObjectVertexSearchRadius
+class ObjectVertexSearchRadius implements QueryElement
 {
+    public const ELEMENT_KEY = 'radius';
+
     private int $radius;
 
     public function __construct(int $radius)
@@ -21,5 +23,10 @@ class ObjectVertexSearchRadius
     public function __toString(): string
     {
         return (string)$this->radius;
+    }
+
+    public function getElementKey(): string
+    {
+        return self::ELEMENT_KEY;
     }
 }

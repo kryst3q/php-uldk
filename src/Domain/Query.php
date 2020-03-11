@@ -6,57 +6,43 @@ namespace Kryst3q\PhpUldk\Domain;
 
 class Query
 {
-    private RequestName $request;
-    private ?ResponseContentOptions $result;
-    private ?ObjectIdentifier $id;
-    private ?ObjectCoordinates $xy;
-    private ?ObjectVertexSearchRadius $radius;
+    /**
+     * @var QueryElement[]
+     */
+    private array $elements = [];
 
-    public function __construct(
-        RequestName $request,
-        ?ObjectIdentifier $id = null,
-        ?ResponseContentOptions $result = null,
-        ?ObjectCoordinates $xy = null,
-        ?ObjectVertexSearchRadius $radius = null
-    ) {
-        $this->request = $request;
-        $this->result = $result;
-        $this->id = $id;
-        $this->xy = $xy;
-        $this->radius = $radius;
+    public function __construct(array $elements)
+    {
+        foreach ($elements as $element) {
+            $this->addElement($element);
+        }
     }
 
     public function __toString(): string
     {
-        return '?'.http_build_query($this->getQueryElements(), '', '&');
+        return '?'.http_build_query($this->prepareElements(), '', '&');
     }
 
-    public function getResponseContentOptions(): ?ResponseContentOptions
+    public function addElement(QueryElement $element): void
     {
-        return $this->result;
+        $this->elements[$element->getElementKey()] = $element;
     }
 
-    private function getQueryElements(): array
+    public function getElement(string $key): ?QueryElement
     {
-        $queryElements = [
-            'request' => (string)$this->request
-        ];
+        return $this->elements[$key] ?? null;
+    }
 
-        if ($this->id !== null) {
-            $queryElements['id'] = (string)$this->id;
-        }
+    private function prepareElements(): array
+    {
+        $queryElements = [];
 
-        $result = (string)$this->result;
-        if ($result !== '') {
-            $queryElements['result'] = $result;
-        }
+        foreach ($this->elements as $element) {
+            $stringifiedElement = (string)$element;
 
-        if ($this->xy !== null) {
-            $queryElements['xy'] = (string)$this->xy;
-        }
-
-        if ($this->radius !== null) {
-            $queryElements['radius'] = (string)$this->radius;
+            if ($stringifiedElement !== '') {
+                $queryElements[$element->getElementKey()] = $stringifiedElement;
+            }
         }
 
         return $queryElements;

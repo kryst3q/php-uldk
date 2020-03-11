@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Kryst3q\PhpUldk\Exception;
 
-use Kryst3q\PhpUldk\ValueObject\CoordinateSystem;
+use Kryst3q\PhpUldk\Domain\CoordinateSystem;
 
 class NotSupportedSridException extends \InvalidArgumentException
 {

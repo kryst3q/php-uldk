@@ -7,8 +7,10 @@ namespace Kryst3q\PhpUldk\Domain;
 use Kryst3q\PhpUldk\Exception\InvalidRequestValueException;
 use Kryst3q\PhpUldk\ValueObject\ValueObject;
 
-class RequestName extends ValueObject
+class RequestName extends ValueObject implements QueryElement
 {
+    public const ELEMENT_KEY = 'request';
+
     public const GET_PARCEL_BY_ID = 'GetParcelById';
     public const GET_PARCEL_BY_ID_OR_NR = 'GetParcelByIdOrNr';
     public const GET_PARCEL_BY_COORDINATES = 'GetParcelByXY';
@@ -28,6 +30,11 @@ class RequestName extends ValueObject
     public const GET_AGGREGATE_AREA = 'GetAggregateArea';
 
     public const SNAP_TO_POINT = 'SnapToPoint';
+
+    public function getElementKey(): string
+    {
+        return self::ELEMENT_KEY;
+    }
 
     public static function getValidValues(): array
     {

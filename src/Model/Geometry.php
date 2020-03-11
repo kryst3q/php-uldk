@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Kryst3q\PhpUldk\Model;
 
-use Kryst3q\PhpUldk\ValueObject\CoordinateSystem;
+use Kryst3q\PhpUldk\Domain\CoordinateSystem;
 use Kryst3q\PhpUldk\ValueObject\GeometryFormat;
 use Kryst3q\PhpUldk\ValueObject\GeometryType;
 

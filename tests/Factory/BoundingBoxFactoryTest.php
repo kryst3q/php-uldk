@@ -8,7 +8,7 @@ use Codeception\Test\Unit;
 use Kryst3q\PhpUldk\Exception\InvalidBoundingBoxValuesNumberException;
 use Kryst3q\PhpUldk\Exception\InvalidBoundingBoxValuesTypeException;
 use Kryst3q\PhpUldk\Factory\BoundingBoxFactory;
-use Kryst3q\PhpUldk\ValueObject\BoundingBox;
+use Kryst3q\PhpUldk\Model\BoundingBox;
 
 class BoundingBoxFactoryTest extends Unit
 {

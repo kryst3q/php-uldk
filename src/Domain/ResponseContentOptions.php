@@ -6,8 +6,10 @@ namespace Kryst3q\PhpUldk\Domain;
 
 use Kryst3q\PhpUldk\ValueObject\GeometryFormat;
 
-class ResponseContentOptions
+class ResponseContentOptions implements QueryElement
 {
+    public const ELEMENT_KEY = 'result';
+
     public const OPT_OBJECT_ID = 'teryt';
     public const OPT_VOIVODESHIP_NAME = 'voivodeship';
     public const OPT_COUNTY_NAME = 'county';
@@ -92,5 +94,10 @@ class ResponseContentOptions
     public function getRequestedGeometryFormat(): GeometryFormat
     {
         return $this->options[self::OPT_GEOMETRY_FORMAT] ?? new GeometryFormat(GeometryFormat::FORMAT_DEFAULT);
+    }
+
+    public function getElementKey(): string
+    {
+        return self::ELEMENT_KEY;
     }
 }
