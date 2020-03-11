@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Kryst3q\PhpUldk\Exception;
 
-use Kryst3q\PhpUldk\Domain\ResponseContentOptions;
 use Kryst3q\PhpUldk\ValueObject\GeometryFormat;
 
 class NotSupportedGeometryFormatException extends \DomainException

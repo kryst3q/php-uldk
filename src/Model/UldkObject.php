@@ -7,12 +7,19 @@ namespace Kryst3q\PhpUldk\Model;
 class UldkObject
 {
     private Geometry $geometry;
+
     private ?BoundingBox $boundingBox;
+
     private ?string $identifier;
+
     private ?string $voivodeshipName;
+
     private ?string $countyName;
+
     private ?string $communeName;
+
     private ?string $regionName;
+
     private ?string $parcelNameOrNumber;
 
     public function __construct(Geometry $geometry)
@@ -33,6 +40,7 @@ class UldkObject
     public function setBoundingBox(?BoundingBox $boundingBox): self
     {
         $this->boundingBox = $boundingBox;
+
         return $this;
     }
 
@@ -44,6 +52,7 @@ class UldkObject
     public function setIdentifier(?string $identifier): self
     {
         $this->identifier = $identifier;
+
         return $this;
     }
 
@@ -55,6 +64,7 @@ class UldkObject
     public function setVoivodeshipName(?string $voivodeshipName): self
     {
         $this->voivodeshipName = $voivodeshipName;
+
         return $this;
     }
 
@@ -66,6 +76,7 @@ class UldkObject
     public function setCountyName(?string $countyName): self
     {
         $this->countyName = $countyName;
+
         return $this;
     }
 
@@ -77,6 +88,7 @@ class UldkObject
     public function setCommuneName(?string $communeName): self
     {
         $this->communeName = $communeName;
+
         return $this;
     }
 
@@ -88,6 +100,7 @@ class UldkObject
     public function setRegionName(?string $regionName): self
     {
         $this->regionName = $regionName;
+
         return $this;
     }
 
@@ -99,6 +112,7 @@ class UldkObject
     public function setParcelNameOrNumber(?string $parcelNameOrNumber): self
     {
         $this->parcelNameOrNumber = $parcelNameOrNumber;
+
         return $this;
     }
 }

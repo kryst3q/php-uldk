@@ -11,8 +11,11 @@ use Kryst3q\PhpUldk\ValueObject\GeometryType;
 class Geometry
 {
     protected CoordinateSystem $coordinateSystem;
+
     protected GeometryFormat $format;
+
     protected string $geometry;
+
     protected GeometryType $type;
 
     public function __construct(

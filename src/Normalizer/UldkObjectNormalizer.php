@@ -13,6 +13,7 @@ use Kryst3q\PhpUldk\Model\UldkObject;
 class UldkObjectNormalizer
 {
     private GeometryFactory $geometryFactory;
+
     private BoundingBoxFactory $boundingBoxFactory;
 
     public function __construct(GeometryFactory $geometryFactory, BoundingBoxFactory $boundingBoxFactory)
@@ -32,24 +33,31 @@ class UldkObjectNormalizer
             switch ($option) {
                 case ResponseContentOptions::OPT_OBJECT_ID:
                     $uldkObject->setIdentifier($objectData[$index]);
+
                     break;
                 case ResponseContentOptions::OPT_BBOX:
                     $uldkObject->setBoundingBox($this->boundingBoxFactory->createFromString($objectData[$index]));
+
                     break;
                 case ResponseContentOptions::OPT_VOIVODESHIP_NAME:
                     $uldkObject->setVoivodeshipName($objectData[$index]);
+
                     break;
                 case ResponseContentOptions::OPT_COUNTY_NAME:
                     $uldkObject->setCountyName($objectData[$index]);
+
                     break;
                 case ResponseContentOptions::OPT_COMMUNE_NAME:
                     $uldkObject->setCommuneName($objectData[$index]);
+
                     break;
                 case ResponseContentOptions::OPT_REGION_NAME_OR_NR:
                     $uldkObject->setRegionName($objectData[$index]);
+
                     break;
                 case ResponseContentOptions::OPT_PARCEL_NR:
                     $uldkObject->setParcelNameOrNumber($objectData[$index]);
+
                     break;
             }
 

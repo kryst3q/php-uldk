@@ -22,7 +22,7 @@ class ObjectVertexSearchRadius implements QueryElement
 
     public function __toString(): string
     {
-        return (string)$this->radius;
+        return (string) $this->radius;
     }
 
     public function getElementKey(): string

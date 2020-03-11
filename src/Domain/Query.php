@@ -6,9 +6,7 @@ namespace Kryst3q\PhpUldk\Domain;
 
 class Query
 {
-    /**
-     * @var QueryElement[]
-     */
+    /** @var QueryElement[] */
     private array $elements = [];
 
     public function __construct(array $elements)
@@ -20,7 +18,7 @@ class Query
 
     public function __toString(): string
     {
-        return '?'.http_build_query($this->prepareElements(), '', '&');
+        return '?' . http_build_query($this->prepareElements(), '', '&');
     }
 
     public function addElement(QueryElement $element): void
@@ -38,7 +36,7 @@ class Query
         $queryElements = [];
 
         foreach ($this->elements as $element) {
-            $stringifiedElement = (string)$element;
+            $stringifiedElement = (string) $element;
 
             if ($stringifiedElement !== '') {
                 $queryElements[$element->getElementKey()] = $stringifiedElement;

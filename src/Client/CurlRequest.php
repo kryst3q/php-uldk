@@ -19,8 +19,8 @@ class CurlRequest implements HttpRequest
     public function execute(Query $query): string
     {
         $handle = curl_init();
-        curl_setopt($handle, CURLOPT_URL, $this->url . $query);
-        curl_setopt($handle, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($handle, \CURLOPT_URL, $this->url . $query);
+        curl_setopt($handle, \CURLOPT_RETURNTRANSFER, 1);
         $result = curl_exec($handle);
         curl_close($handle);
 

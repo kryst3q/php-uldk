@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace Kryst3q\PhpUldk\Domain;
 
-use Kryst3q\PhpUldk\Domain\CoordinateSystem;
-
 class ObjectCoordinates implements QueryElement
 {
     public const ELEMENT_KEY = 'xy';
 
     private float $x;
+
     private float $y;
+
     private ?CoordinateSystem $srid;
 
     public function __construct(float $x, float $y, CoordinateSystem $srid = null)
@@ -27,7 +27,7 @@ class ObjectCoordinates implements QueryElement
             '%s,%s%s',
             $this->x,
             $this->y,
-            $this->srid === null ? '' : ','.$this->srid
+            $this->srid === null ? '' : ',' . $this->srid
         );
     }
 

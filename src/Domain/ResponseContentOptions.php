@@ -11,18 +11,22 @@ class ResponseContentOptions implements QueryElement
     public const ELEMENT_KEY = 'result';
 
     public const OPT_OBJECT_ID = 'teryt';
+
     public const OPT_VOIVODESHIP_NAME = 'voivodeship';
+
     public const OPT_COUNTY_NAME = 'county';
+
     public const OPT_COMMUNE_NAME = 'commune';
+
     public const OPT_REGION_NAME_OR_NR = 'region';
+
     public const OPT_PARCEL_NR = 'parcel';
+
     public const OPT_BBOX = 'geom_extent';
 
     public const OPT_GEOMETRY_FORMAT = 'geom_format';
 
-    /**
-     * @var string[]
-     */
+    /** @var string[] */
     private array $options = [];
 
     public function __toString(): string

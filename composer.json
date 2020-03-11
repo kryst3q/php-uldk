@@ -4,7 +4,9 @@
     "type": "library",
     "require-dev": {
         "codeception/codeception": "^4.1",
-        "codeception/module-asserts": "^1.0.0"
+        "codeception/module-asserts": "^1.0.0",
+        "symplify/easy-coding-standard": "^7.2",
+        "sylius-labs/coding-standard": "^3.1"
     },
     "license": "GPL-3.0-or-later",
     "authors": [

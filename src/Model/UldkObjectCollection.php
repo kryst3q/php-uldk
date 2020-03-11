@@ -16,7 +16,7 @@ class UldkObjectCollection implements \IteratorAggregate
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function getIterator(): \ArrayIterator
     {

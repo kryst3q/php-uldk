@@ -6,9 +6,7 @@ namespace Kryst3q\PhpUldk\Domain;
 
 class ObjectIdentifierCollection implements \IteratorAggregate
 {
-    /**
-     * @var ObjectIdentifier[]
-     */
+    /** @var ObjectIdentifier[] */
     private array $identifiers = [];
 
     public function __construct(array $objectIdentifiers)
@@ -24,7 +22,7 @@ class ObjectIdentifierCollection implements \IteratorAggregate
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function getIterator(): \ArrayIterator
     {

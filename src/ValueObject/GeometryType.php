@@ -9,11 +9,17 @@ use Kryst3q\PhpUldk\Exception\NotSupportedGeometryTypeException;
 class GeometryType extends ValueObject
 {
     public const TYPE_MULTI_LINE_STRING = 'MULTILINESTRING';
+
     public const TYPE_GEOMETRY_COLLECTION = 'GEOMETRYCOLLECTION';
+
     public const TYPE_POINT = 'POINT';
+
     public const TYPE_MULTI_POINT = 'MULTIPOINT';
+
     public const TYPE_MULTI_POLYGON = 'MULTIPOLYGON';
+
     public const TYPE_LINE_STRING = 'LINESTRING';
+
     public const TYPE_POLYGON = 'POLYGON';
 
     public static function getSupportedGeometryTypes(): array
@@ -25,7 +31,7 @@ class GeometryType extends ValueObject
             self::TYPE_MULTI_LINE_STRING,
             self::TYPE_POINT,
             self::TYPE_MULTI_POLYGON,
-            self::TYPE_POLYGON
+            self::TYPE_POLYGON,
         ];
     }
 

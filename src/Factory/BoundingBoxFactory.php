@@ -19,10 +19,10 @@ class BoundingBoxFactory
         $this->validate($bboxArray);
 
         return new BoundingBox(
-            (float)$bboxArray[0],
-            (float)$bboxArray[1],
-            (float)$bboxArray[2],
-            (float)$bboxArray[3]
+            (float) $bboxArray[0],
+            (float) $bboxArray[1],
+            (float) $bboxArray[2],
+            (float) $bboxArray[3]
         );
     }
 
@@ -34,8 +34,8 @@ class BoundingBoxFactory
         }
 
         foreach ($bboxArray as $bboxValue) {
-            $floatVal = floatval($bboxValue);
-            if (!$floatVal || intval($floatVal) == $floatVal) {
+            $floatVal = (float) $bboxValue;
+            if (!$floatVal || (int) $floatVal == $floatVal) {
                 throw new InvalidBoundingBoxValuesTypeException();
             }
         }

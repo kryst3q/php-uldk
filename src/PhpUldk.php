@@ -21,7 +21,9 @@ use Model\UldkObjectCollection;
 class PhpUldk
 {
     private ResponseContentOptions $defaultOptions;
+
     private HttpRequest $httpRequest;
+
     private UldkObjectNormalizer $normalizer;
 
     public function __construct(HttpRequest $httpRequest, UldkObjectNormalizer $normalizer)
@@ -104,7 +106,7 @@ class PhpUldk
         $query = new Query([
             new RequestName(RequestName::GET_PARCEL_BY_ID_OR_NR),
             $parcelIdOrNr,
-            $options ?? $this->defaultOptions
+            $options ?? $this->defaultOptions,
         ]);
 
         $result = $this->makeRequest($query);
@@ -198,7 +200,6 @@ class PhpUldk
         /*
          * TODO: Change normalization for this use case.
          */
-
     }
 
     /**
@@ -224,7 +225,7 @@ class PhpUldk
         $query = new Query([
             $requestName,
             $objectId,
-            $options ?? $this->defaultOptions
+            $options ?? $this->defaultOptions,
         ]);
         $result = $this->makeRequest($query);
 
@@ -242,7 +243,7 @@ class PhpUldk
         $query = new Query([
             $requestName,
             $coordinates,
-            $options ?? $this->defaultOptions
+            $options ?? $this->defaultOptions,
         ]);
         $result = $this->makeRequest($query);
 
