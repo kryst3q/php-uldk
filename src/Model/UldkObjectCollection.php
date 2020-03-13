@@ -2,17 +2,21 @@
 
 declare(strict_types=1);
 
-namespace Model;
-
-use Kryst3q\PhpUldk\Model\UldkObject;
+namespace Kryst3q\PhpUldk\Model;
 
 class UldkObjectCollection implements \IteratorAggregate
 {
+    /** @var UldkObject[] */
     private array $uldkObjects = [];
 
     public function add(UldkObject $uldkObject): void
     {
         $this->uldkObjects[] = $uldkObject;
+    }
+
+    public function getFirst(): UldkObject
+    {
+        return $this->uldkObjects[0];
     }
 
     /**

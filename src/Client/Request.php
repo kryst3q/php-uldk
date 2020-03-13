@@ -6,17 +6,21 @@ namespace Kryst3q\PhpUldk\Client;
 
 use Kryst3q\PhpUldk\Domain\Query;
 use Kryst3q\PhpUldk\Exception\UldkRequestException;
+use Kryst3q\PhpUldk\Factory\ResponseFactory;
 
-class CurlRequest implements HttpRequest
+class Request implements HttpRequest
 {
     private string $url;
 
-    public function __construct(string $url)
+    private ResponseFactory $responseFactory;
+
+    public function __construct(string $url, ResponseFactory $responseFactory)
     {
         $this->url = $url;
+        $this->responseFactory = $responseFactory;
     }
 
-    public function execute(Query $query): array
+    public function execute(Query $query): HttpResponse
     {
         $handle = curl_init();
         curl_setopt($handle, \CURLOPT_URL, $this->url . $query);
@@ -28,13 +32,6 @@ class CurlRequest implements HttpRequest
             throw new UldkRequestException(curl_error($handle));
         }
 
-        $result = explode("\n", $result);
-        $status = array_shift($result);
-
-        if (strpos($status, '-') === 0) {
-            throw new UldkRequestException(substr($status, 2));
-        }
-
-        return $result;
+        return $this->responseFactory->create($result, $query);
     }
 }

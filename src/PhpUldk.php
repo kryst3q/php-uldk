@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Kryst3q\PhpUldk;
 
 use Kryst3q\PhpUldk\Client\HttpRequest;
+use Kryst3q\PhpUldk\Client\HttpResponse;
 use Kryst3q\PhpUldk\Domain\ObjectCoordinates;
 use Kryst3q\PhpUldk\Domain\ObjectIdentifier;
 use Kryst3q\PhpUldk\Domain\ObjectIdentifierCollection;
@@ -14,9 +15,9 @@ use Kryst3q\PhpUldk\Domain\RequestName;
 use Kryst3q\PhpUldk\Domain\ResponseContentOptions;
 use Kryst3q\PhpUldk\Exception\UldkRequestException;
 use Kryst3q\PhpUldk\Model\UldkObject;
+use Kryst3q\PhpUldk\Model\UldkObjectCollection;
 use Kryst3q\PhpUldk\Normalizer\UldkObjectNormalizer;
 use Kryst3q\PhpUldk\ValueObject\GeometryFormat;
-use Model\UldkObjectCollection;
 
 class PhpUldk
 {
@@ -109,14 +110,9 @@ class PhpUldk
             $options ?? $this->defaultOptions,
         ]);
 
-        $result = $this->makeRequest($query);
-        $uldkObjectCollection = new UldkObjectCollection();
+        $response = $this->makeRequest($query);
 
-        foreach ($result as $rawObjectData) {
-            $uldkObjectCollection->add($this->normalizer->denormalize($rawObjectData, $query));
-        }
-
-        return $uldkObjectCollection;
+        return $response->getObjects();
     }
 
     /**
@@ -210,10 +206,8 @@ class PhpUldk
             $options
         ]);
         $result = $this->makeRequest($query);
-        $uldkObject = $this->normalizer->denormalize($result[0], $query);
-        $uldkObject->setDistanceToSnappedPointInMeters((float) $result[1]);
 
-        return $uldkObject;
+        return $result->getObjects()->getFirst();
     }
 
     /**
@@ -236,7 +230,7 @@ class PhpUldk
         ]);
         $result = $this->makeRequest($query);
 
-        return $this->normalizer->denormalize($result[0], $query);
+        return $result->getObjects()->getFirst();
     }
 
     /**
@@ -252,9 +246,9 @@ class PhpUldk
             $objectId,
             $options ?? $this->defaultOptions,
         ]);
-        $result = $this->makeRequest($query);
+        $response = $this->makeRequest($query);
 
-        return $this->normalizer->denormalize($result[0], $query);
+        return $response->getObjects()->getFirst();
     }
 
     /**
@@ -270,15 +264,15 @@ class PhpUldk
             $coordinates,
             $options ?? $this->defaultOptions,
         ]);
-        $result = $this->makeRequest($query);
+        $response = $this->makeRequest($query); //change var name and make use of getFirst method
 
-        return $this->normalizer->denormalize($result[0], $query);
+        return $response->getObjects()->getFirst();
     }
 
     /**
      * @throws UldkRequestException
      */
-    private function makeRequest(Query $query): array
+    private function makeRequest(Query $query): HttpResponse
     {
         return $this->httpRequest->execute($query);
     }
