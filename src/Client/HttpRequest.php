@@ -12,5 +12,5 @@ interface HttpRequest
     /**
      * @throws UldkRequestException
      */
-    public function execute(Query $query): string;
+    public function execute(Query $query): array;
 }

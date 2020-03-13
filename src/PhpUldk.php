@@ -197,9 +197,23 @@ class PhpUldk
         ObjectVertexSearchRadius $searchRadius,
         GeometryFormat $geometryFormat = null
     ): UldkObject {
-        /*
-         * TODO: Change normalization for this use case.
-         */
+        $options = new ResponseContentOptions();
+
+        if ($geometryFormat !== null) {
+            $options->setGeometryFormat($geometryFormat);
+        }
+
+        $query = new Query([
+            RequestName::SNAP_TO_POINT,
+            $coordinates,
+            $searchRadius,
+            $options
+        ]);
+        $result = $this->makeRequest($query);
+        $uldkObject = $this->normalizer->denormalize($result[0], $query);
+        $uldkObject->setDistanceToSnappedPointInMeters((float) $result[1]);
+
+        return $uldkObject;
     }
 
     /**
@@ -207,11 +221,22 @@ class PhpUldk
      */
     public function getAggregateArea(
         ObjectIdentifierCollection $objectIdentifiers,
-        GeometryFormat $geometryFormat
+        GeometryFormat $geometryFormat = null
     ): UldkObject {
-        /*
-         * TODO: Change normalization for this use case.
-         */
+        $options = new ResponseContentOptions();
+
+        if ($geometryFormat !== null) {
+            $options->setGeometryFormat($geometryFormat);
+        }
+
+        $query = new Query([
+            RequestName::GET_AGGREGATE_AREA,
+            $objectIdentifiers,
+            $options,
+        ]);
+        $result = $this->makeRequest($query);
+
+        return $this->normalizer->denormalize($result[0], $query);
     }
 
     /**
@@ -255,10 +280,6 @@ class PhpUldk
      */
     private function makeRequest(Query $query): array
     {
-        $result = $this->httpRequest->execute($query);
-        $result = explode("\n", $result);
-        array_shift($result);
-
-        return $result;
+        return $this->httpRequest->execute($query);
     }
 }

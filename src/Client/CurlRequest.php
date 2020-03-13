@@ -16,7 +16,7 @@ class CurlRequest implements HttpRequest
         $this->url = $url;
     }
 
-    public function execute(Query $query): string
+    public function execute(Query $query): array
     {
         $handle = curl_init();
         curl_setopt($handle, \CURLOPT_URL, $this->url . $query);
@@ -26,6 +26,13 @@ class CurlRequest implements HttpRequest
 
         if ($result === false) {
             throw new UldkRequestException(curl_error($handle));
+        }
+
+        $result = explode("\n", $result);
+        $status = array_shift($result);
+
+        if (strpos($status, '-') === 0) {
+            throw new UldkRequestException(substr($status, 2));
         }
 
         return $result;

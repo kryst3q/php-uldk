@@ -8,19 +8,21 @@ class UldkObject
 {
     private Geometry $geometry;
 
-    private ?BoundingBox $boundingBox;
+    private ?BoundingBox $boundingBox = null;
 
-    private ?string $identifier;
+    private ?string $identifier = null;
 
-    private ?string $voivodeshipName;
+    private ?string $voivodeshipName = null;
 
-    private ?string $countyName;
+    private ?string $countyName = null;
 
-    private ?string $communeName;
+    private ?string $communeName = null;
 
-    private ?string $regionName;
+    private ?string $regionName = null;
 
-    private ?string $parcelNameOrNumber;
+    private ?string $parcelNameOrNumber = null;
+
+    private ?float $distanceToSnappedPointInMeters = null;
 
     public function __construct(Geometry $geometry)
     {
@@ -112,6 +114,18 @@ class UldkObject
     public function setParcelNameOrNumber(?string $parcelNameOrNumber): self
     {
         $this->parcelNameOrNumber = $parcelNameOrNumber;
+
+        return $this;
+    }
+
+    public function getDistanceToSnappedPointInMeters(): ?float
+    {
+        return $this->distanceToSnappedPointInMeters;
+    }
+
+    public function setDistanceToSnappedPointInMeters(float $distance): self
+    {
+        $this->distanceToSnappedPointInMeters = $distance;
 
         return $this;
     }

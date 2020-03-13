@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Kryst3q\PhpUldk\Domain;
 
-class ObjectIdentifierCollection implements \IteratorAggregate
+class ObjectIdentifierCollection implements \IteratorAggregate, QueryElement
 {
     /** @var ObjectIdentifier[] */
     private array $identifiers = [];
@@ -27,5 +27,15 @@ class ObjectIdentifierCollection implements \IteratorAggregate
     public function getIterator(): \ArrayIterator
     {
         return new \ArrayIterator($this->identifiers);
+    }
+
+    public function getElementKey(): string
+    {
+        return ObjectIdentifier::ELEMENT_KEY;
+    }
+
+    public function __toString(): string
+    {
+        return implode(',', $this->identifiers);
     }
 }

@@ -5,6 +5,7 @@ namespace Kryst3q\PhpUldk\Tests\Normalizer;
 use Codeception\Test\Unit;
 use Kryst3q\PhpUldk\Domain\CoordinateSystem;
 use Kryst3q\PhpUldk\Domain\ObjectIdentifier;
+use Kryst3q\PhpUldk\Domain\ObjectIdentifierCollection;
 use Kryst3q\PhpUldk\Domain\Query;
 use Kryst3q\PhpUldk\Domain\RequestName;
 use Kryst3q\PhpUldk\Domain\ResponseContentOptions;
@@ -44,7 +45,7 @@ class UldkObjectNormalizerTest extends Unit
         );
     }
 
-    public function testNormalizeWktResponse(): void
+    public function testNormalizeGetParcelByIdWktResponse(): void
     {
         $id = '141201_1.0001.6509';
         $bboxString = '677009.54,481558.91,677082.74,481627.23';
@@ -84,7 +85,7 @@ class UldkObjectNormalizerTest extends Unit
                     new CoordinateSystem(CoordinateSystem::SRID_2180),
                     'SRID=2180;POLYGON((677047.4 481558.91,677009.54 481577.8,677033.52 481618.26,677045.44 481625.09,677062.41 481626.24,677076.78 481627.23,677082.74 481626.02,677047.4 481558.91))',
                     new GeometryType(GeometryType::TYPE_POLYGON),
-                    new GeometryFormat(GeometryFormat::FORMAT_WKT)
+                    $geometryFormat
                 )
             );
 
@@ -111,5 +112,48 @@ class UldkObjectNormalizerTest extends Unit
             'SRID=2180;POLYGON((677047.4 481558.91,677009.54 481577.8,677033.52 481618.26,677045.44 481625.09,677062.41 481626.24,677076.78 481627.23,677082.74 481626.02,677047.4 481558.91))',
             $geometry->getGeometry()
         );
+    }
+
+    public function testNormalizeGetAggregateAreaWktResponse(): void
+    {
+        $firstId = '141201_1.0001.6509';
+        $secondId = '131201_1.0002.7011';
+        $geometryFormat = new GeometryFormat(GeometryFormat::FORMAT_WKT);
+        $query = new Query([
+            new RequestName(RequestName::GET_PARCEL_BY_ID),
+            new ObjectIdentifierCollection([new ObjectIdentifier($firstId), new ObjectIdentifier($secondId)]),
+            (new ResponseContentOptions())->setGeometryFormat($geometryFormat)
+        ]);
+        $resultString = 'POLYGON((676549.8 482287.29,676550.06 482283.87,676539.14 482282.82,676536.23 482319.66,676547.16 482320.68,676549.8 482287.29))';
+
+        $this->geometryFactory
+            ->createFromObjectData(explode('|', $resultString), $query)
+            ->shouldBeCalledOnce()
+            ->willReturn(
+                new Geometry(
+                    new CoordinateSystem(CoordinateSystem::SRID_2180),
+                    $resultString,
+                    new GeometryType(GeometryType::TYPE_POLYGON),
+                   $geometryFormat
+                )
+            );
+
+        $uldkObject = $this->normalizer->denormalize($resultString, $query);
+
+        self::assertInstanceOf(UldkObject::class, $uldkObject);
+        self::assertNull($uldkObject->getIdentifier());
+        self::assertNull($uldkObject->getVoivodeshipName());
+        self::assertNull($uldkObject->getCountyName());
+        self::assertNull($uldkObject->getCommuneName());
+        self::assertNull($uldkObject->getParcelNameOrNumber());
+        self::assertNull($uldkObject->getRegionName());
+        self::assertNull($uldkObject->getBoundingBox());
+
+        $geometry = $uldkObject->getGeometry();
+        self::assertInstanceOf(Geometry::class, $geometry);
+        self::assertSame('2180', $geometry->getCoordinateSystem()->getValue());
+        self::assertSame('geom_wkt', $geometry->getFormat()->getValue());
+        self::assertSame('POLYGON', $geometry->getType()->getValue());
+        self::assertSame($resultString, $geometry->getGeometry());
     }
 }
