@@ -16,7 +16,6 @@ use Kryst3q\PhpUldk\Domain\ResponseContentOptions;
 use Kryst3q\PhpUldk\Exception\UldkRequestException;
 use Kryst3q\PhpUldk\Model\UldkObject;
 use Kryst3q\PhpUldk\Model\UldkObjectCollection;
-use Kryst3q\PhpUldk\Normalizer\UldkObjectNormalizer;
 use Kryst3q\PhpUldk\ValueObject\GeometryFormat;
 
 class PhpUldk
@@ -25,12 +24,9 @@ class PhpUldk
 
     private HttpRequest $httpRequest;
 
-    private UldkObjectNormalizer $normalizer;
-
-    public function __construct(HttpRequest $httpRequest, UldkObjectNormalizer $normalizer)
+    public function __construct(HttpRequest $httpRequest)
     {
         $this->httpRequest = $httpRequest;
-        $this->normalizer = $normalizer;
 
         $this->defaultOptions = (new ResponseContentOptions())
             ->addBoundaryBox()
@@ -190,7 +186,7 @@ class PhpUldk
      */
     public function snapToPoint(
         ObjectCoordinates $coordinates,
-        ObjectVertexSearchRadius $searchRadius,
+        ObjectVertexSearchRadius $searchRadius = null,
         GeometryFormat $geometryFormat = null
     ): UldkObject {
         $options = new ResponseContentOptions();
@@ -200,11 +196,15 @@ class PhpUldk
         }
 
         $query = new Query([
-            RequestName::SNAP_TO_POINT,
+            new RequestName(RequestName::SNAP_TO_POINT),
             $coordinates,
-            $searchRadius,
             $options
         ]);
+
+        if ($searchRadius !== null) {
+            $query->addElement($searchRadius);
+        }
+
         $result = $this->makeRequest($query);
 
         return $result->getObjects()->getFirst();
@@ -224,7 +224,7 @@ class PhpUldk
         }
 
         $query = new Query([
-            RequestName::GET_AGGREGATE_AREA,
+            new RequestName(RequestName::GET_AGGREGATE_AREA),
             $objectIdentifiers,
             $options,
         ]);
@@ -257,14 +257,14 @@ class PhpUldk
     private function getObjectByCoordinates(
         RequestName $requestName,
         ObjectCoordinates $coordinates,
-        ResponseContentOptions $options
+        ?ResponseContentOptions $options
     ): UldkObject {
         $query = new Query([
             $requestName,
             $coordinates,
             $options ?? $this->defaultOptions,
         ]);
-        $response = $this->makeRequest($query); //change var name and make use of getFirst method
+        $response = $this->makeRequest($query);
 
         return $response->getObjects()->getFirst();
     }
