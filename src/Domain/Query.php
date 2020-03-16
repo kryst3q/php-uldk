@@ -12,6 +12,10 @@ class Query
     public function __construct(array $elements)
     {
         foreach ($elements as $element) {
+            if ($element === null) {
+                continue;
+            }
+            
             $this->addElement($element);
         }
     }
@@ -26,9 +30,14 @@ class Query
         $this->elements[$element->getElementKey()] = $element;
     }
 
-    public function getElement(string $key): ?QueryElement
+    public function getElement(string $key): QueryElement
     {
-        return $this->elements[$key] ?? null;
+        return $this->elements[$key];
+    }
+    
+    public function hasElement(string $key): bool
+    {
+        return isset($this->elements[$key]);
     }
 
     private function prepareElements(): array

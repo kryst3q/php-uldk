@@ -94,8 +94,8 @@ class ResponseFactoryTest extends Unit
             new RequestName(RequestName::GET_PARCEL_BY_ID_OR_NR),
             (new ResponseContentOptions())
                 ->setGeometryFormat(new GeometryFormat(GeometryFormat::FORMAT_WKT))
-                ->addCommuneName()
-                ->addRegionNameOrNumber()
+                ->requestCommuneName()
+                ->requestRegionNameOrNumber()
         ]);
 
         $result1 = 'SRID=2180;POLYGON((216936.780566 358211.157314,216905.017714 358178.821458,216916.431762 358172.059717,216969.822756 358235.328759,217054.157538 358339.824309,217032.156395 358322.48633,216936.780566 358211.157314))|Bogatynia|Krzewina';

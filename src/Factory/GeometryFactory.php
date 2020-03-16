@@ -20,7 +20,9 @@ class GeometryFactory
         /*
          * TODO: Read srid from decoded response geometry instead of getting it from query.
          */
-        $srid = $query->getElement(CoordinateSystem::ELEMENT_KEY) ?? CoordinateSystem::DEFAULT;
+        $srid = $query->hasElement(CoordinateSystem::ELEMENT_KEY)
+            ? $query->getElement(CoordinateSystem::ELEMENT_KEY)
+            : CoordinateSystem::DEFAULT;
 
         if ($options !== null && $options->getRequestedGeometryFormat()->getValue() === GeometryFormat::FORMAT_WKT) {
             $geometryType = strstr(explode(';', $geometryString)[1], '(', true);

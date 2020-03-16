@@ -22,6 +22,7 @@ use Kryst3q\PhpUldk\ValueObject\GeometryFormat;
 use Kryst3q\PhpUldk\ValueObject\GeometryType;
 use Prophecy\Argument;
 use Prophecy\Prophecy\ObjectProphecy;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 class PhpUldkTest extends Unit
 {
@@ -30,6 +31,13 @@ class PhpUldkTest extends Unit
      */
     private ObjectProphecy $httpRequest;
 
+    /**
+     * @var ObjectProphecy|ContainerBuilder
+     */
+    private ObjectProphecy $container;
+
+    private ResponseContentOptions $options;
+
     private PhpUldk $phpUldk;
 
     protected function _before()
@@ -37,7 +45,14 @@ class PhpUldkTest extends Unit
         parent::_before();
 
         $this->httpRequest = $this->prophesize(HttpRequest::class);
-        $this->phpUldk = new PhpUldk($this->httpRequest->reveal());
+        $this->container = $this->prophesize(ContainerBuilder::class);
+        $this->container
+            ->get('request')
+            ->shouldBeCalledOnce()
+            ->willReturn($this->httpRequest->reveal());
+        $this->options = (new ResponseContentOptions())
+            ->setGeometryFormat(new GeometryFormat(GeometryFormat::FORMAT_WKT));
+        $this->phpUldk = new PhpUldk($this->options, $this->container->reveal());
     }
 
     /**
@@ -55,8 +70,7 @@ class PhpUldkTest extends Unit
         $collection->add($object);
         $query = new Query([
             new RequestName($requestName),
-            (new ResponseContentOptions())
-                ->setGeometryFormat(new GeometryFormat(GeometryFormat::FORMAT_WKT))
+            $this->options
         ]);
         $this->httpRequest
             ->execute(Argument::type(Query::class))

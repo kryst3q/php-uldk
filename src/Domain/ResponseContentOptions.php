@@ -34,7 +34,7 @@ class ResponseContentOptions implements QueryElement
         return implode(',', $this->options);
     }
 
-    public function addBoundaryBox(): self
+    public function requestBoundaryBox(): self
     {
         $this->options[] = self::OPT_BBOX;
 
@@ -48,42 +48,42 @@ class ResponseContentOptions implements QueryElement
         return $this;
     }
 
-    public function addObjectIdentifier(): self
+    public function requestObjectIdentifier(): self
     {
         $this->options[] = self::OPT_OBJECT_ID;
 
         return $this;
     }
 
-    public function addVoivodeshipName(): self
+    public function requestVoivodeshipName(): self
     {
         $this->options[] = self::OPT_VOIVODESHIP_NAME;
 
         return $this;
     }
 
-    public function addCountyName(): self
+    public function requestCountyName(): self
     {
         $this->options[] = self::OPT_COUNTY_NAME;
 
         return $this;
     }
 
-    public function addCommuneName(): self
+    public function requestCommuneName(): self
     {
         $this->options[] = self::OPT_COMMUNE_NAME;
 
         return $this;
     }
 
-    public function addRegionNameOrNumber(): self
+    public function requestRegionNameOrNumber(): self
     {
         $this->options[] = self::OPT_REGION_NAME_OR_NR;
 
         return $this;
     }
 
-    public function addParcelNumber(): self
+    public function requestParcelNumber(): self
     {
         $this->options[] = self::OPT_PARCEL_NR;
 

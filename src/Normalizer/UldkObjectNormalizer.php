@@ -36,7 +36,8 @@ class UldkObjectNormalizer
 
                     break;
                 case ResponseContentOptions::OPT_BBOX:
-                    $uldkObject->setBoundingBox($this->boundingBoxFactory->createFromString($objectData[$index]));
+                    $bbox = $objectData[$index] === '' ? null : $this->boundingBoxFactory->createFromString($objectData[$index]);
+                    $uldkObject->setBoundingBox($bbox);
 
                     break;
                 case ResponseContentOptions::OPT_VOIVODESHIP_NAME:

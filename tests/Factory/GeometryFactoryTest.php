@@ -32,13 +32,13 @@ class GeometryFactoryTest extends Unit
             new RequestName(RequestName::GET_PARCEL_BY_ID),
             new ObjectIdentifier($id),
             (new ResponseContentOptions())
-                ->addVoivodeshipName()
-                ->addBoundaryBox()
-                ->addCountyName()
-                ->addCommuneName()
-                ->addObjectIdentifier()
-                ->addParcelNumber()
-                ->addRegionNameOrNumber()
+                ->requestVoivodeshipName()
+                ->requestBoundaryBox()
+                ->requestCountyName()
+                ->requestCommuneName()
+                ->requestObjectIdentifier()
+                ->requestParcelNumber()
+                ->requestRegionNameOrNumber()
                 ->setGeometryFormat($geometryFormat)
         ]);
         $resultArray = explode('|', 'Mazowieckie|677009.54,481558.91,677082.74,481627.23|Miński|Mińsk Mazowiecki|141201_1.0001.6509|6509|Mińsk Mazowiecki|SRID=2180;POLYGON((677047.4 481558.91,677009.54 481577.8,677033.52 481618.26,677045.44 481625.09,677062.41 481626.24,677076.78 481627.23,677082.74 481626.02,677047.4 481558.91))');

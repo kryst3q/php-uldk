@@ -34,7 +34,7 @@ class QueryTest extends Unit
                     new RequestName(RequestName::GET_PARCEL_BY_ID),
                     new ObjectIdentifier('141201_1.0001.6509'),
                     (new ResponseContentOptions())
-                        ->addBoundaryBox()
+                        ->requestBoundaryBox()
                         ->setGeometryFormat(new GeometryFormat(GeometryFormat::FORMAT_WKT)),
                     new CoordinateSystem(CoordinateSystem::SRID_4326)
                 ]
@@ -45,9 +45,9 @@ class QueryTest extends Unit
                     new RequestName(RequestName::GET_PARCEL_BY_ID_OR_NR),
                     new ObjectIdentifier('Krzewina 134'),
                     (new ResponseContentOptions())
-                        ->addObjectIdentifier()
-                        ->addCommuneName()
-                        ->addParcelNumber()
+                        ->requestObjectIdentifier()
+                        ->requestCommuneName()
+                        ->requestParcelNumber()
                         ->setGeometryFormat(new GeometryFormat(GeometryFormat::FORMAT_WKB))
                 ]
             ],

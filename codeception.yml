@@ -19,3 +19,4 @@ coverage:
     exclude:
         - src/Models/*
         - src/Client/*
+        - src/Provider/ServiceProvider.php

@@ -30,13 +30,13 @@ class ResponseContentOptionsTest extends Unit
     public function testReturnAllOptions(string $expected, ?string $geometryFormat): void
     {
         $options = (new ResponseContentOptions())
-            ->addBoundaryBox()
-            ->addCountyName()
-            ->addCommuneName()
-            ->addObjectIdentifier()
-            ->addParcelNumber()
-            ->addRegionNameOrNumber()
-            ->addVoivodeshipName()
+            ->requestBoundaryBox()
+            ->requestCountyName()
+            ->requestCommuneName()
+            ->requestObjectIdentifier()
+            ->requestParcelNumber()
+            ->requestRegionNameOrNumber()
+            ->requestVoivodeshipName()
         ;
 
         if ($geometryFormat !== null) {

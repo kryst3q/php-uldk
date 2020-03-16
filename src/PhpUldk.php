@@ -16,21 +16,22 @@ use Kryst3q\PhpUldk\Domain\ResponseContentOptions;
 use Kryst3q\PhpUldk\Exception\UldkRequestException;
 use Kryst3q\PhpUldk\Model\UldkObject;
 use Kryst3q\PhpUldk\Model\UldkObjectCollection;
+use Kryst3q\PhpUldk\Provider\ServiceProvider;
 use Kryst3q\PhpUldk\ValueObject\GeometryFormat;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 class PhpUldk
 {
-    private ResponseContentOptions $defaultOptions;
+    private ?ResponseContentOptions $defaultOptions;
 
     private HttpRequest $httpRequest;
 
-    public function __construct(HttpRequest $httpRequest)
+    public function __construct(ResponseContentOptions $options = null, ContainerBuilder $container = null)
     {
-        $this->httpRequest = $httpRequest;
+        $container = $container ?? ServiceProvider::buildContainer();
 
-        $this->defaultOptions = (new ResponseContentOptions())
-            ->addBoundaryBox()
-            ->setGeometryFormat(new GeometryFormat(GeometryFormat::FORMAT_WKT));
+        $this->httpRequest = $container->get('request');
+        $this->defaultOptions = $options;
     }
 
     /**
@@ -103,7 +104,7 @@ class PhpUldk
         $query = new Query([
             new RequestName(RequestName::GET_PARCEL_BY_ID_OR_NR),
             $parcelIdOrNr,
-            $options ?? $this->defaultOptions,
+            $options
         ]);
 
         $response = $this->makeRequest($query);
@@ -189,17 +190,17 @@ class PhpUldk
         ObjectVertexSearchRadius $searchRadius = null,
         GeometryFormat $geometryFormat = null
     ): UldkObject {
-        $options = new ResponseContentOptions();
-
-        if ($geometryFormat !== null) {
-            $options->setGeometryFormat($geometryFormat);
-        }
-
         $query = new Query([
             new RequestName(RequestName::SNAP_TO_POINT),
             $coordinates,
-            $options
         ]);
+        
+        if ($geometryFormat !== null) {
+            $options = new ResponseContentOptions();
+            $options->setGeometryFormat($geometryFormat);
+            
+            $query->addElement($options);
+        }
 
         if ($searchRadius !== null) {
             $query->addElement($searchRadius);
@@ -217,17 +218,18 @@ class PhpUldk
         ObjectIdentifierCollection $objectIdentifiers,
         GeometryFormat $geometryFormat = null
     ): UldkObject {
-        $options = new ResponseContentOptions();
-
-        if ($geometryFormat !== null) {
-            $options->setGeometryFormat($geometryFormat);
-        }
-
         $query = new Query([
             new RequestName(RequestName::GET_AGGREGATE_AREA),
             $objectIdentifiers,
-            $options,
         ]);
+        
+        if ($geometryFormat !== null) {
+            $options = new ResponseContentOptions();
+            $options->setGeometryFormat($geometryFormat);
+            
+            $query->addElement($options);
+        }
+        
         $result = $this->makeRequest($query);
 
         return $result->getObjects()->getFirst();
@@ -239,12 +241,12 @@ class PhpUldk
     private function getObjectById(
         RequestName $requestName,
         ObjectIdentifier $objectId,
-        ?ResponseContentOptions $options
+        ResponseContentOptions $options = null
     ): UldkObject {
         $query = new Query([
             $requestName,
             $objectId,
-            $options ?? $this->defaultOptions,
+            $options,
         ]);
         $response = $this->makeRequest($query);
 
@@ -257,12 +259,12 @@ class PhpUldk
     private function getObjectByCoordinates(
         RequestName $requestName,
         ObjectCoordinates $coordinates,
-        ?ResponseContentOptions $options
+        ResponseContentOptions $options = null
     ): UldkObject {
         $query = new Query([
             $requestName,
             $coordinates,
-            $options ?? $this->defaultOptions,
+            $options
         ]);
         $response = $this->makeRequest($query);
 
@@ -274,6 +276,13 @@ class PhpUldk
      */
     private function makeRequest(Query $query): HttpResponse
     {
+        if (
+            !$query->hasElement(ResponseContentOptions::ELEMENT_KEY) 
+            && $this->defaultOptions instanceof ResponseContentOptions
+        ) {
+            $query->addElement($this->defaultOptions);
+        } 
+        
         return $this->httpRequest->execute($query);
     }
 }
