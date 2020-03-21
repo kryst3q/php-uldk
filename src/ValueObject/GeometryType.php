@@ -6,7 +6,7 @@ namespace Kryst3q\PhpUldk\ValueObject;
 
 use Kryst3q\PhpUldk\Exception\NotSupportedGeometryTypeException;
 
-class GeometryType extends ValueObject
+final class GeometryType extends ValueObject
 {
     public const TYPE_MULTI_LINE_STRING = 'MULTILINESTRING';
 

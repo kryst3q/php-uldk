@@ -281,7 +281,11 @@ class PhpUldk
             && $this->defaultOptions instanceof ResponseContentOptions
         ) {
             $query->addElement($this->defaultOptions);
-        } 
+        }
+
+        /** @var ResponseContentOptions $options */
+        $options = $query->getElement(ResponseContentOptions::ELEMENT_KEY);
+        $query->addElement($options->getRequestedCoordinateSystem());
         
         return $this->httpRequest->execute($query);
     }

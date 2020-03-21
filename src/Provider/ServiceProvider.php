@@ -12,7 +12,7 @@ use Kryst3q\PhpUldk\Normalizer\UldkObjectNormalizer;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
 
-class ServiceProvider
+final class ServiceProvider
 {
     public static function buildContainer(): ContainerBuilder
     {

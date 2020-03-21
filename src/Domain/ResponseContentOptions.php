@@ -29,6 +29,8 @@ class ResponseContentOptions implements QueryElement
     /** @var string[] */
     private array $options = [];
 
+    private ?CoordinateSystem $coordinateSystem = null;
+
     public function __toString(): string
     {
         return implode(',', $this->options);
@@ -44,6 +46,13 @@ class ResponseContentOptions implements QueryElement
     public function setGeometryFormat(GeometryFormat $format): self
     {
         $this->options[self::OPT_GEOMETRY_FORMAT] = $format;
+
+        return $this;
+    }
+
+    public function setCoordinateSystem(CoordinateSystem $coordinateSystem): self
+    {
+        $this->coordinateSystem = $coordinateSystem;
 
         return $this;
     }
@@ -98,6 +107,11 @@ class ResponseContentOptions implements QueryElement
     public function getRequestedGeometryFormat(): GeometryFormat
     {
         return $this->options[self::OPT_GEOMETRY_FORMAT] ?? new GeometryFormat(GeometryFormat::FORMAT_DEFAULT);
+    }
+
+    public function getRequestedCoordinateSystem(): CoordinateSystem
+    {
+        return $this->coordinateSystem ?? new CoordinateSystem(CoordinateSystem::DEFAULT);
     }
 
     public function getElementKey(): string

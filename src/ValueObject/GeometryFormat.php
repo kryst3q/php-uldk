@@ -6,7 +6,7 @@ namespace Kryst3q\PhpUldk\ValueObject;
 
 use Kryst3q\PhpUldk\Exception\NotSupportedGeometryFormatException;
 
-class GeometryFormat extends ValueObject
+final class GeometryFormat extends ValueObject
 {
     public const FORMAT_WKT = 'geom_wkt';
 
