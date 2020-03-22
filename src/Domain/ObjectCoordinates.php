@@ -12,22 +12,18 @@ class ObjectCoordinates implements QueryElement
 
     private float $y;
 
-    private ?CoordinateSystem $srid;
-
-    public function __construct(float $x, float $y, CoordinateSystem $srid = null)
+    public function __construct(float $x, float $y)
     {
         $this->x = $x;
         $this->y = $y;
-        $this->srid = $srid;
     }
 
     public function __toString(): string
     {
         return sprintf(
-            '%s,%s%s',
+            '%s,%s',
             $this->x,
             $this->y,
-            $this->srid === null ? '' : ',' . $this->srid
         );
     }
 

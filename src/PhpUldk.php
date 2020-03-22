@@ -22,7 +22,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 class PhpUldk
 {
-    private ?ResponseContentOptions $defaultOptions;
+    private ResponseContentOptions $defaultOptions;
 
     private HttpRequest $httpRequest;
 
@@ -31,7 +31,7 @@ class PhpUldk
         $container = $container ?? ServiceProvider::buildContainer();
 
         $this->httpRequest = $container->get('request');
-        $this->defaultOptions = $options;
+        $this->defaultOptions = $options ?? new ResponseContentOptions();
     }
 
     /**
@@ -193,17 +193,14 @@ class PhpUldk
         $query = new Query([
             new RequestName(RequestName::SNAP_TO_POINT),
             $coordinates,
+            $searchRadius
         ]);
         
         if ($geometryFormat !== null) {
-            $options = new ResponseContentOptions();
+            $options = clone $this->defaultOptions;
             $options->setGeometryFormat($geometryFormat);
             
             $query->addElement($options);
-        }
-
-        if ($searchRadius !== null) {
-            $query->addElement($searchRadius);
         }
 
         $result = $this->makeRequest($query);
@@ -276,17 +273,22 @@ class PhpUldk
      */
     private function makeRequest(Query $query): HttpResponse
     {
-        if (
-            !$query->hasElement(ResponseContentOptions::ELEMENT_KEY) 
-            && $this->defaultOptions instanceof ResponseContentOptions
-        ) {
-            $query->addElement($this->defaultOptions);
+        $this->addCoordinateSystemToQuery($query);
+
+        return $this->httpRequest->execute($query);
+    }
+
+    private function addCoordinateSystemToQuery(Query $query): void
+    {
+        $hasOptionsSet = $query->hasElement(ResponseContentOptions::ELEMENT_KEY);
+        $options = $hasOptionsSet
+            ? $query->getElement(ResponseContentOptions::ELEMENT_KEY)
+            : clone $this->defaultOptions;
+
+        if (!$hasOptionsSet) {
+            $query->addElement($options);
         }
 
-        /** @var ResponseContentOptions $options */
-        $options = $query->getElement(ResponseContentOptions::ELEMENT_KEY);
         $query->addElement($options->getRequestedCoordinateSystem());
-        
-        return $this->httpRequest->execute($query);
     }
 }

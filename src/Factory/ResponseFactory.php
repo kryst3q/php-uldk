@@ -27,8 +27,8 @@ class ResponseFactory
         $requestResult = array_filter($requestResult, fn($value) => $value !== '');
         $status = array_shift($requestResult);
 
-        if (strpos($status, '-') === 0) {
-            throw new UldkRequestException(substr($status, 3));
+        if ($requestResult === []) {
+            throw new UldkRequestException($status);
         }
 
         $uldkObjectCollection = new UldkObjectCollection();

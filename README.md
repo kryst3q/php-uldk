@@ -15,6 +15,7 @@ Assuming that php file lies in project's root directory on the same level as ven
 ```php
 <?php
 
+use Kryst3q\PhpUldk\Domain\CoordinateSystem;
 use Kryst3q\PhpUldk\Domain\ObjectIdentifier;
 use Kryst3q\PhpUldk\Domain\ResponseContentOptions;
 use Kryst3q\PhpUldk\PhpUldk;
@@ -31,6 +32,7 @@ $parcelId = new ObjectIdentifier('141201_1.0001.6509');
 # 3. (optional) Prepare options. It depends on them what information will be returned.
 $options = new ResponseContentOptions();
 $options->setGeometryFormat(new GeometryFormat(GeometryFormat::FORMAT_WKT)); # Default is WKB
+$options->setCoordinateSystem(new CoordinateSystem(CoordinateSystem::SRID_4326)); # Default is ESD:2180
 $options->requestBoundaryBox();
 #$options->requestParcelNumber();
 #$options->requestCommuneName();

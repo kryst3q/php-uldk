@@ -16,16 +16,19 @@ class GeometryFactory
     public function createFromObjectData(array $objectData, Query $query): Geometry
     {
         $options = $query->getElement(ResponseContentOptions::ELEMENT_KEY);
-        $geometryString = array_pop($objectData);
+        $geometryData = array_shift($objectData);
         /*
          * TODO: Read srid from decoded response geometry instead of getting it from query.
          */
         $srid = $query->hasElement(CoordinateSystem::ELEMENT_KEY)
             ? $query->getElement(CoordinateSystem::ELEMENT_KEY)
-            : CoordinateSystem::DEFAULT;
+            : new CoordinateSystem(CoordinateSystem::DEFAULT);
 
         if ($options !== null && $options->getRequestedGeometryFormat()->getValue() === GeometryFormat::FORMAT_WKT) {
-            $geometryType = strstr(explode(';', $geometryString)[1], '(', true);
+            $geometryString = strpos($geometryData, ';') === false
+                ? $geometryData
+                : explode(';', $geometryData)[1];
+            $geometryType = strstr($geometryString, '(', true);
             $geometryFormat = GeometryFormat::FORMAT_WKT;
         } else {
             $geometryFormat = GeometryFormat::FORMAT_WKB;
@@ -36,8 +39,8 @@ class GeometryFactory
         }
 
         return new Geometry(
-            new CoordinateSystem($srid),
-            $geometryString,
+            $srid,
+            $geometryData,
             new GeometryType($geometryType),
             new GeometryFormat($geometryFormat)
         );

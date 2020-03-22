@@ -60,10 +60,10 @@ class QueryTest extends Unit
                 ]
             ],
             [
-                '?request=GetParcelByXY&xy=460166.4,313380.5,4326',
+                '?request=GetParcelByXY&xy=460166.4,313380.5',
                 [
                     new RequestName(RequestName::GET_PARCEL_BY_COORDINATES),
-                    new ObjectCoordinates(460166.4, 313380.5, new CoordinateSystem(CoordinateSystem::SRID_4326))
+                    new ObjectCoordinates(460166.4, 313380.5)
                 ]
             ],
             [

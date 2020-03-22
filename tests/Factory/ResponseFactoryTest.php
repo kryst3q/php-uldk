@@ -41,7 +41,7 @@ class ResponseFactoryTest extends Unit
     public function testThrowExceptionIfErrorOccurredOnUldkServiceSide(): void
     {
         $this->expectException(UldkRequestException::class);
-        $this->expectExceptionMessage('An error occurred during execution of ULDK request: wystąpił bład.');
+        $this->expectExceptionMessage('An error occurred during execution of ULDK request: -1 wystąpił bład.');
 
         $this->factory->create("-1 wystąpił bład\n", new Query([]));
     }

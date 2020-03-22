@@ -13,7 +13,7 @@ class NotSupportedSridException extends \InvalidArgumentException
         parent::__construct(sprintf(
             'Spatial reference identifier "%s" is not supported. Supported identifiers: "%s".',
             $invalidValue,
-            CoordinateSystem::getSupportedSrids()
+            implode('", "', CoordinateSystem::getSupportedSrids())
         ));
     }
 }
